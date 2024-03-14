@@ -8,7 +8,8 @@ export async function loader() {
   }
 
 export default function Index() {
-    const products = useLoaderData();
+  const products = useLoaderData();
+  
   return (
     <main className='container'>
         <div>

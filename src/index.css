@@ -1,9 +1,7 @@
 :root {
-  --primary-color: #82728c;
-  --secondary-color: #2e8c8c;
-  --tertiary-color: #b6d7d4;
-  --orange: #f2ae30;
-  --darck-orange: #e99401;
+  --primary-color: #2e8c8c;
+  --secondary-color: #e99401;
+  --tertiary-color: #f2ae30;
   --white: #f5f5f5;
   --black: #050505;
 
@@ -52,10 +50,11 @@ li {
  /*** Header ****/
 .header {
   max-width: 100%;
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color);
   color: var(--white);
   transition: opacity 1.8s ease;
   opacity: 1;
+  margin-bottom: 5rem;
 }
 
 .fixed { 
@@ -63,6 +62,7 @@ li {
   top: 0;
   opacity: 1;
   width: 100%;
+  margin: 0;
 }
 
 .hidde {
@@ -163,9 +163,10 @@ li {
 
  /*** Footer ****/
  .footer {
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color);
   color: var(--white);
   padding: 3rem 5rem;
+  margin-top: 5rem;
  }
 
 

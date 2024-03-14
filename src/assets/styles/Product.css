@@ -6,7 +6,7 @@
   .product:first-child {
     padding-top: 0;
   }
-  
+
   .product-layout {
     display: block;
   }
@@ -31,7 +31,7 @@
   .product-layout .price {
     font-size: 3.2rem;
     font-weight: bold;
-    color: var(--darck-orange);
+    color: var(--secondary-color);
   }
 
   .product-layout .title {
@@ -41,10 +41,10 @@
   .product-layout .button {
     margin-top: 3rem;
     font-size: 3rem;
-    background-color: var(--darck-orange);
+    background-color: var(--secondary-color);
     cursor: pointer;
     color: var(--white);
-    border: 1px solid var(--darck-orange);
+    border: 1px solid var(--secondary-color);
     width: 15rem;
     height: 6rem;
     border-radius: 5rem;
@@ -52,13 +52,13 @@
 
   .product-layout .button:hover,
   .product-layout .button:active {
-    background-color: var(--orange);
+    background-color: var(--tertiary-color);
     font-size: 3.2rem;
   }
 
   .product-layout .button:active {
     position: relative;
-    top: 1px;
+    top: -1px;
   }
 
   @media (width >= 750px) {

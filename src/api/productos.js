@@ -5,7 +5,7 @@ export async function getProdructs() {
         console.log({url})
         const response = await fetch(url);
         if (!response.ok) {
-            throw new Error('Error Obteniendo los productos')
+            throw new Error('Error getting the products')
         }
 
         return await response.json();
@@ -19,7 +19,7 @@ export async function getProdruct(productId) {
         console.log({url})
         const response = await fetch(`${url}/${productId}`);
         if (!response.ok) {
-            throw new Error('Error Obteniendo el producto')
+            throw new Error('Error getting the product')
         }
 
         return await response.json();
