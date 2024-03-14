@@ -1,0 +1,33 @@
+.product {
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+  }
+  
+  .product-item {
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    width: 100%;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .product-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .product-layout img {
+    width: 400px;
+  }
+  
+  .product-layout .price {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--darck-orange);
+  }
+  

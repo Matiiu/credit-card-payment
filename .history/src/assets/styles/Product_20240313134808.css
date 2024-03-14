@@ -1,0 +1,24 @@
+.product {
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); 
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; 
+}
+
+.product-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.product-layout img {
+    width: 400px
+}
+
+.product-layout .price {
+    font-size: 30px;
+    font-family: 700;
+    color: var(--darck-orange);
+}

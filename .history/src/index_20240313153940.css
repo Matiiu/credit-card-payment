@@ -1,0 +1,92 @@
+:root {
+  --primary-color: #82728c;
+  --secondary-color: #2e8c8c;
+  --tertiary-color: #b6d7d4;
+  --orange: #f2ae30;
+  --darck-orange: #e99401;
+  --white: #f5f5f5;
+  --black: #050505;
+
+  --primary-font: 'Outfit', sans-serif;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  font-size: 2rem;
+  font-family: var(--primary-font);
+  line-height: 1.5;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+h1, h2, h3, h4, figure {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+
+.header {
+  width: 100%;
+  background-color: var(--secondary-color);
+  color: var(--white);
+  transition: opacity 1s ease
+}
+
+.fixed {
+  position: fixed;
+  top: 0;
+  opacity: 1;
+}
+
+.hidde {
+  opacity: 0;
+}
+
+.header .header-layout {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  padding: 1rem 0 2rem 0;
+}
+
+.header-layout nav {
+  text-align: center;
+}
+
+.header-layout ul {
+  font-size: 1.55rem;
+  font-weight: bold;
+  display: flex;
+  gap: 1.2rem;
+  padding: 0;
+}
+
+.header-layout ul li a {
+  color: var(--white);
+}
+
+.container {
+  width: min(95%, 120rem);
+  margin: 3rem auto;
+}
+

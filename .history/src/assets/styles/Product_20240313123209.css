@@ -1,0 +1,7 @@
+.products-layout {
+
+}
+
+.product-img {
+    width: max(400px, 600px);
+}

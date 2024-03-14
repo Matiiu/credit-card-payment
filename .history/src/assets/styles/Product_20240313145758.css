@@ -1,0 +1,31 @@
+.product {
+    width: 100%;
+    height: 100vh;
+  }
+
+  .product-item {
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .product-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+  }
+
+  .product-layout .bg-image {
+    box-shadow: 0 0 1rem 1rem rrgb(248, 246, 246);
+    border-radius: 1rem;
+    text-align: center;
+  }
+  
+  .product-layout img {
+    width: 400px;
+  }
+  
+  .product-layout .price {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--darck-orange);
+  }
+  

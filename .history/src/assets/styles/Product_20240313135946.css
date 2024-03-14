@@ -1,0 +1,33 @@
+.product {
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+    display: flex; /* Usamos flexbox para centrar verticalmente */
+    align-items: center; /* Centrar verticalmente */
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; /* Desplazamiento suave entre productos */
+    scroll-behavior: smooth; /* Desplazamiento suave */
+  }
+  
+  .product-item {
+    flex: 0 0 auto; /* Evita que los elementos se ajusten */
+    scroll-snap-align: center; /* Centrar cada producto */
+    width: 100%; /* Cada producto ocupa el 100% del ancho de la pantalla */
+    transition: opacity 0.5s ease-in-out; /* Efecto de transición de opacidad */
+  }
+  
+  .product-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .product-layout img {
+    width: 400px;
+  }
+  
+  .product-layout .price {
+    font-size: 30px;
+    font-family: 'Outfit', sans-serif; /* Cambia '700' por una fuente real */
+    color: var(--darck-orange);
+  }
+  

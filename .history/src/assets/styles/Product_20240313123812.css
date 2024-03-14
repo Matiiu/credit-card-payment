@@ -1,0 +1,8 @@
+.product-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.products .product-desciption img {
+    width: 400px
+}

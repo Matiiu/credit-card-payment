@@ -1,0 +1,24 @@
+.product {
+    text-align: center;
+    width: 100vw; /* 100% del ancho de la ventana del navegador */
+    height: 100vh; /* 100% de la altura de la ventana del navegador */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Cada producto ocupará el 100% del ancho de la pantalla */
+    overflow-x: auto; /* Habilitar desplazamiento horizontal */
+    scroll-snap-type: x mandatory; /* Desplazamiento suave entre productos */
+}
+
+.product-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.product-layout img {
+    width: 400px
+}
+
+.product-layout .price {
+    font-size: 30px;
+    font-family: 700;
+    color: var(--darck-orange);
+}

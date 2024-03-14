@@ -1,0 +1,12 @@
+.product-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.product-layout .product-desciption img {
+    width: 400px
+}
+
+.product-layout .price {
+    color: var(--orange);
+}
