@@ -6,9 +6,31 @@ import logo from '../assets/img/logo.png';
 import imgVisa from '../assets/img/visa.png';
 import imgMastercard from '../assets/img/mastercard.png';
 import imgAmex from '../assets/img/amex.png';
+import { useEffect, useState } from 'react';
 
 
 export default function ModalPay({ setModalOpen }) {
+    const [tomorrow, setTomorrow] = useState('');
+
+    useEffect(() => {
+        const getCurrentDate = () => {
+            const tomorrowDate = new Date();
+            tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+
+            const year = tomorrowDate.getFullYear();
+            let month = tomorrowDate.getMonth() + 1;
+            let day = tomorrowDate.getDate();
+
+            // Asegurarse de que el mes y el día tienen dos dígitos
+            month = month < 10 ? `0${month}` : month;
+            day = day < 10 ? `0${day}` : day;
+
+            setTomorrow(`${year}-${month}-${day}`);
+        }
+
+        getCurrentDate();
+    })
+
     return (
         <div className="modal-container">
             <div className="modal-overlay">
@@ -29,58 +51,65 @@ export default function ModalPay({ setModalOpen }) {
                     </header>
 
                     <div className="modal-content">
-                        <figure className='credit-card-logos'>
-                            <img src={imgVisa} alt="logo Visa" />
-                            <img src={imgMastercard} alt="Logo Mastercard" />
-                            <img src={imgAmex} alt="Logo American Express" />
-                        </figure>
+                        <div className='modal-content-layout container'>
+                            <figure className='credit-card-logos'>
+                                <img src={imgVisa} alt="logo Visa" />
+                                <img src={imgMastercard} alt="Logo Mastercard" />
+                                <img src={imgAmex} alt="Logo American Express" />
+                            </figure>
 
-                        <form className='crdit-card-form'>
-                            <div className='input-container'>
-                                <input
-                                    type="text"
-                                    id="credit-number"
-                                    name="credit-number"
-                                    className="input"
-                                    placeholder='xxxx xxxx xxx xxxx'
-                                />
-                                <label htmlFor="credit-number" className='label'>Credit Card Number:</label>
-                            </div>
+                            <form className='credit-card-form'>
+                                <div className='input-container'>
+                                    <label htmlFor="credit-number" className='label'>Credit Card Number:</label>
+                                    <input
+                                        type="text"
+                                        id="credit-number"
+                                        name="credit-number"
+                                        className="input"
+                                        placeholder='xxxx xxxx xxx xxxx'
+                                        minLength={16}
+                                        maxLength={16}
+                                        required
+                                    />
+                                </div>
 
-                            <div className='input-container'>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    className="input"
-                                    placeholder='Your Name'
-                                />
-                                <label htmlFor="name" className='label'>Owner&apos;s name:</label>
-                            </div>
+                                <div className='input-container'>
+                                    <label htmlFor="name" className='label'>Owner&apos;s name:</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        className="input"
+                                        placeholder='Your Name'
+                                    />
+                                </div>
 
-                            <div className='security-info'>
-                            <div className='input-container'>
+                                <div className='input-container'>
+                                    <label htmlFor="date" className='label'>Due Date:</label>
                                     <input
                                         type="date"
                                         id="date"
                                         name="date"
                                         className="input"
+                                        min={tomorrow}
                                     />
-                                    <label htmlFor="date" className='label'>Due Date:</label>
                                 </div>
 
                                 <div className='input-container'>
+                                    <label htmlFor="credit-number" className='label'>Security Code:</label>
                                     <input
                                         type="password"
                                         id="name"
                                         name="name"
                                         className="input"
                                         placeholder='xxx'
+                                        minLength={3}
+                                        maxLength={3}
+                                        required
                                     />
-                                    <label htmlFor="credit-number" className='label'>Security Code:</label>
-                            </div>
-                            </div> 
-                        </form>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </section>
             </div>

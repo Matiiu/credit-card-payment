@@ -1,116 +1,149 @@
 .modal-container {
-    text-align: center;
-  }
-  
-  .modal-container .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+  text-align: center;
+}
 
-  .modal-container .button-close {
-    border: none;
-    font-size: 2.2rem;
-    color: #514c4c;
-    background-color: transparent;
-    cursor: pointer;
-  }
+.modal-container .modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .modal-container .button-close span {
-    color: #526da5;
-    transition: text-shadow 0.6s ease;
-  }
+.modal-container .button-close {
+  border: none;
+  font-size: 2.2rem;
+  color: #514c4c;
+  background-color: transparent;
+  cursor: pointer;
+}
 
-  .modal-container .button-close:hover,
-  .modal-container .button-close span:active {
-    font-size: 2.5rem;
-  }
+.modal-container .button-close span {
+  color: #526da5;
+  transition: text-shadow 0.6s ease;
+}
 
-  .modal-container .button-close span:hover,
-  .modal-container .button-close span:active {
-    color: #19408c;
-    text-shadow: filter;
-    text-shadow: 0 0 10px #19408c;
-  }
+.modal-container .button-close:hover,
+.modal-container .button-close span:active {
+  font-size: 2.5rem;
+}
 
-  .modal-container .modal {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 95%;
-    min-height: 35%;
-  }
+.modal-container .button-close span:hover,
+.modal-container .button-close span:active {
+  color: #19408c;
+  text-shadow: filter;
+  text-shadow: 0 0 10px #19408c;
+}
 
-  .modal-container .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
- 
+.modal-container .modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 95%;
+  min-height: 35%;
+}
 
-  .modal-container .credit-card-logos {
-    display: flex;
-    justify-content: flex-end;
-    gap: 2rem
-  }
-
-  .modal-container .credit-card-logos img {
-    width: 5rem;
-  }
-
-  .modal-container .crdit-card-form {
-    margin-block: 5rem;
-    display: grid;
-    justify-content: center;
-    gap: 5rem;
-    align-items: center;
-  }
-
-  .modal-container .security-info {
-    display: grid;
-    justify-content: center;
-    gap: 5rem;
-    align-items: center;
-  }
-
-  .modal-container .input-container {
-    position: relative;
-    margin-bottom: 2rem;
-  }
-  
-  .modal-container .label {
-    font-size: 2rem;
-    position: absolute;
-    color: #6c6666;
-    left: 0;
-    bottom: 4.2rem;
-
-  }
-  
-  .modal-container .input {
-    width: 35rem;
-    padding: 1rem;
-    border: 0.1rem solid #ccc;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    font-size: 2.2rem;
-  }
-
-  .modal-container .input::placeholder {
-    color: #ccc;
-  }
-
-  .modal-container .input:focus-visible {
-  outline: none;
-  border-color: rgb(57, 73, 219);
+.modal-container .modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 
+.modal-container .credit-card-logos {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
 
+.modal-container .credit-card-logos img {
+  width: 5rem;
+  filter: grayscale(100%); /* poner imagen en blanco y negro */
+}
+
+.modal-container .credit-card-logos img.with-color {
+  filter: none; /* Devolver el color */
+}
+
+.modal-container .credit-card-form {
+  margin-block: 5rem;
+  display: grid;
+  justify-content: center;
+  
+  gap: 5rem;
+}
+
+.modal-container .input-container {
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.modal-container .label {
+  font-size: 2rem;
+  color: #6c6666;
+  left: 0;
+  bottom: 4.2rem;
+}
+
+.modal-container .input {
+  min-width: 100%;
+  border-bottom: 0.18rem solid #ccc;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+.modal-container .input::placeholder {
+  color: #ccc;
+}
+
+.modal-container .input:focus-visible {
+  outline: none;
+  border-color: rgb(33, 53, 225);
+}
+
+@media (width >= 750px) {
+  .modal-container .modal-content-layout {
+    width: 60rem;
+  }
+
+  .modal-container .input {
+    width: 35rem;
+    padding: 1rem;
+    font-size: 2.2rem;
+  }
+
+  .modal-container .credit-card-logos {
+    justify-content: flex-end;
+  }
+
+  .modal-container .credit-card-logos img {
+    width: 6rem;
+  }
+}
+
+@media (width >= 995px) {
+  .modal-container .modal {
+    width: 80%;
+  }
+
+  .modal-container .credit-card-form {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+  }
+}
+
+@media (width >= 1200px) {
+  .modal-container .modal {
+    width: 70%;
+  }
+}
