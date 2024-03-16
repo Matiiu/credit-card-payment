@@ -47,6 +47,15 @@ li {
   margin: 3rem auto;
 }
 
+.alert-error {
+  padding: 1rem 2rem;
+  background-color: #ffcccc;
+  color: #cc0000;
+  border: 1px solid #cc0000;
+  border-radius: 5px;
+  min-width: 100%;
+}
+
  /*** Header ****/
 .header {
   max-width: 100%;

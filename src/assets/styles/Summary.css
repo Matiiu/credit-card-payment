@@ -1,0 +1,14 @@
+.sumary .resume {
+    margin-block: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.sumary .info-user,
+.sumary .info-product {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+}

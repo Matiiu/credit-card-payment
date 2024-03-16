@@ -46,7 +46,7 @@ export default function Pay() {
           </div>
         </section>
       </div>
-      {modalOpen && <ModalPay setModalOpen={setModalOpen} />}
+      {modalOpen && <ModalPay setModalOpen={setModalOpen} product={product} />}
     </div>
   )
 }

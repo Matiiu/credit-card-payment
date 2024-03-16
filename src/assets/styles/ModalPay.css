@@ -42,9 +42,9 @@
 .modal-container .modal {
   background-color: white;
   padding: 20px;
-  border-radius: 8px;
-  width: 95%;
-  min-height: 35%;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
 }
 
 .modal-container .modal-header {
@@ -64,61 +64,151 @@
 
 .modal-container .credit-card-logos img {
   width: 5rem;
-  filter: grayscale(100%); /* poner imagen en blanco y negro */
 }
 
-.modal-container .credit-card-logos img.with-color {
-  filter: none; /* Devolver el color */
+.modal-container .credit-card-logos img.black-white {
+  filter: grayscale(100%);
+  /* poner imagen en blanco y negro */
 }
+
 
 .modal-container .credit-card-form {
-  margin-block: 5rem;
+  margin: 6rem 0 0 3rem;
   display: grid;
-  justify-content: center;
-  
-  gap: 5rem;
+  gap: 3rem;
 }
 
+/**** Fileds Layout ****/
+
+.modal-container .fields-layout {
+  display: flex;
+  gap: 3rem;
+}
+
+
+.modal-container .credit-card-form .document-type {
+  border-top: 0;
+  border-inline: 0;
+  font-size: 2rem;
+  border-bottom: 0.18rem solid #ccc;
+  padding-block: 1rem;
+}
+
+
+
 .modal-container .input-container {
-  margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  flex-grow: 1;
 }
 
+
+/* .modal-container .input-container:nth-child(2) {
+  margin-top: 2rem;
+} */
+
+
 .modal-container .label {
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: #6c6666;
   left: 0;
   bottom: 4.2rem;
 }
 
+
+.modal-container .img-credit-option {
+  margin-top: -5rem;
+  margin-left: 85%;
+  width: 4rem;
+  height: 3rem;
+}
+
 .modal-container .input {
-  min-width: 100%;
+  width: 100%;
   border-bottom: 0.18rem solid #ccc;
   border-top: none;
-  border-left: none;
-  border-right: none;
+  border-inline: none;
+  font-size: 2rem;
+  margin: 0;
 }
+
+.modal-container .no-grow {
+  flex-grow: 0 !important;
+}
+
 
 .modal-container .input::placeholder {
   color: #ccc;
 }
 
-.modal-container .input:focus-visible {
+.modal-container .input:focus-visible,
+.modal-container .document-type:focus-visible {
   outline: none;
   border-color: rgb(33, 53, 225);
 }
 
-@media (width >= 750px) {
+.modal-container .installments {
+  width: 4.9rem !important;
+  padding-inline: 0 !important;
+}
+
+.modal-container .buttons-form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-block: 2rem
+}
+
+.modal-container .buttons-form .button-next {
+  margin-top: 3rem;
+  font-size: 2.5rem;
+  cursor: pointer;
+  color: var(--white);
+  background-color: #19408c;
+  border: 1px solid #19408c;
+  width: 30rem;
+  height: 5rem;
+  border-radius: 3rem;
+}
+
+.modal-container .buttons-form button:hover {
+  filter: brightness(1.2);
+}
+
+
+.modal-container .buttons-form button.is-error:hover {
+  filter: none !important;
+}
+
+.modal-container .msg-error {
+  color: #ff0000;
+  font-size: 1.6rem;
+  height: 2rem;
+}
+
+.modal-container .first-error {
+  padding-top: 2rem;
+}
+
+
+.modal-container .buttons-form button.is-error {
+  background-color: #dddada !important;
+  border-color: #dddada !important;
+}
+
+
+@media (width >=750px) {
+
+  .modal-container .credit-card-form {}
+
   .modal-container .modal-content-layout {
     width: 60rem;
   }
 
   .modal-container .input {
-    width: 35rem;
     padding: 1rem;
-    font-size: 2.2rem;
+    margin-bottom: 1rem;
   }
 
   .modal-container .credit-card-logos {
@@ -130,20 +220,16 @@
   }
 }
 
-@media (width >= 995px) {
+@media (width >=995px) {
   .modal-container .modal {
     width: 80%;
-  }
-
-  .modal-container .credit-card-form {
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    justify-items: center;
+    height: 90%;
   }
 }
 
-@media (width >= 1200px) {
+@media (width >=1200px) {
   .modal-container .modal {
     width: 70%;
+    height: 90%;
   }
 }
