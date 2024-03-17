@@ -81,7 +81,6 @@ export default function ModalPay({ setModalOpen }) {
             // Convertir la información de la tarjeta a cadena JSON
             const cardInfoString = JSON.stringify(formData);
             // Guardar en el storage
-            console.log(cardInfoString)
             localStorage.setItem('cardInfo', cardInfoString);
         }
         if (step < 3) {
@@ -91,16 +90,25 @@ export default function ModalPay({ setModalOpen }) {
             // Activar la carga
             setLoading(true);
 
-            // Desactivar la carga después de 1.5 segundos
+            // Desactivar la carga después de 1 segundo
             setTimeout(() => {
                 setLoading(false);
                 localStorage.setItem('step', (nextStep).toString());
                 dispatch(saveStep(nextStep))
                 setStep(nextStep);
-            }, 1500);
+            }, 1000);
         }
 
     };
+
+    const handleBack = () => {
+        if (step > 0) {
+            let backStep = step - 1;
+            localStorage.setItem('step', (backStep).toString());
+            dispatch(saveStep(backStep))
+            setStep(backStep);
+        }
+    }
 
     const validateFieldsClick = (data) => {
         const {
@@ -155,7 +163,6 @@ export default function ModalPay({ setModalOpen }) {
 
     useEffect(() => {
         const storageStep = Number(localStorage.getItem('step')) || 1;
-        console.log({ storageStep })
         setStep(storageStep)
         dispatch(saveStep(storageStep))
 
@@ -206,6 +213,7 @@ export default function ModalPay({ setModalOpen }) {
                             >{step === 1 ? 'Continue' : 'Confirm'}</button>)
                             : (<button className='button-next' onClick={() => setModalOpen(false)}>Close Modal</button>)
                         }
+                        {step === 2 && <button className='button-back' onClick={handleBack}>Back</button>}
                     </footer>
                     {alertError && <div className='alert-error' ref={errorRef}>{alertError}</div>}
                 </section>

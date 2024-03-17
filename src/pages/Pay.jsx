@@ -13,6 +13,12 @@ import '../assets/styles/Pay.css';
 export async function loader({ params }) {
   // Obtenemos el id de la variable dinamica que se declaro en las rutas
   const response = await getProdruct(params?.productId ?? '');
+  if (!Object.values(response).length) {
+    throw new Response('', {
+        status: 404,
+        statusText: 'No Hay Resultados',
+    });
+}
   return response;
 }
 
@@ -23,22 +29,34 @@ export default function Pay() {
   const { id, title, price, description, category, image } = product;
   const [modalOpen, setModalOpen] = useState(false);
   const dispatch = useDispatch();
+  const [completePurchase, setCompletePurchase] = useState(false);
 
 
 
   useEffect(() => {
+    // Inmedietamente nuestra página carga
     // Guardamos el id del producto en nuestro storage local
     localStorage.setItem('productId', (id).toString());
     // Guardamos la información del producto en nuestro sorage global
     dispatch(addProduct({ product }));
+    // Validamos si el cliente se encuentra en el paso final, lo que significa que ya había finalizado el pago
+    const stepStoage = localStorage.getItem('step') || '';
+    if (stepStoage && Number(stepStoage) === 3) {
+      setCompletePurchase(true);
+    }
   }, []);
 
-  const handleBack = () => {
-    const confirmCancel = window.confirm(
-      'Do you confirm that you do not wish to continue purchasing this product?'
-    );
+  const handleReverse = () => {
+    // Creamos un mensaje de cancelación en caso de que el cliente ya hubiera terminado la compra
+    // o de devolución para devolverlo a la tienda 
+    let msgAlert = completePurchase
+      ? 'If you cancel your purchase, all product data will be deleted. Do you agree to continue?'
+      : 'Do you confirm that you do not wish to continue purchasing this product?';
+    // Creamos una alerta de confirmación
+    const confirmCancel = window.confirm(msgAlert);
     if (confirmCancel) {
-      // Eliminamos los datos del produto el paso en el que iba el cliente y el id de nuestros storages y devovlemos al cliente a la tienda
+      // Si el usaurio confirma la cancelación eliminamos los datos del produto, el paso en el que iba el cliente
+      // y el id de nuestros storages y devovlemos al cliente a la tienda
       localStorage.removeItem('productId');
       localStorage.removeItem('step');
       dispatch(addProduct({ product: {} }));
@@ -50,10 +68,13 @@ export default function Pay() {
     <div>
       <div className='product-pay container'>
         <button
-          className="button-back"
-          onClick={handleBack}
+          className="button-reverse"
+          onClick={handleReverse}
         >
-          <i className="bi bi-skip-backward-fill"></i> Back
+          {completePurchase
+            ? <i className="bi bi-x-circle"></i>
+            : <i className="bi bi-skip-backward-fill"></i>}
+          {completePurchase ? 'Cancel Purchase' : 'Back'}
         </button>
         <section className="product-layout">
           <figure className="bg-image">
@@ -68,7 +89,7 @@ export default function Pay() {
             <button
               className='button'
               onClick={() => setModalOpen(true)}
-            >Pay with credit card</button>
+            >{completePurchase ? 'View purchase information' : 'Pay with credit card'}</button>
           </div>
         </section>
       </div>

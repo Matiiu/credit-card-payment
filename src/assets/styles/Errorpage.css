@@ -1,0 +1,19 @@
+.error-page {
+    text-align: center;
+    margin-block: 10rem;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 2rem;
+    color: var(--secondary-color); 
+}
+
+.return-link {
+    color: #4169e1;
+    text-decoration: none;
+}
+
+.return-link:hover {
+    text-decoration: underline;
+}

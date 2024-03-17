@@ -24,9 +24,10 @@ export default function InfoCard({ setError, error, onSaveFormData, activateErro
     const [tomorrow, setTomorrow] = useState('');
 
     useEffect(() => {
+        // Recuperamos los datos del usuario almacenados en nuestro state global
         if (reduxProduct?.userInfo && Object.keys(reduxProduct.userInfo).length > 0) {
-            setFranchise(reduxProduct.userInfo.franchise);
-            setCreditCard(reduxProduct.userInfo.creditCard);
+            setFranchise(reduxProduct.userInfo?.franchise);
+            setCreditCard(reduxProduct.userInfo?.creditCard);
             setInstallments(reduxProduct.userInfo?.installments);
             setOwner(reduxProduct.userInfo?.owner);
             setExpiryDate(reduxProduct.userInfo?.expiryDate);

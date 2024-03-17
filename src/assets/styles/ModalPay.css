@@ -156,7 +156,9 @@
 .modal-container .buttons-form {
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin-block: 2rem
 }
 
@@ -167,6 +169,18 @@
   color: var(--white);
   background-color: #19408c;
   border: 1px solid #19408c;
+  width: 30rem;
+  height: 5rem;
+  border-radius: 3rem;
+}
+
+.modal-container .buttons-form .button-back {
+  margin-top: 3rem;
+  font-size: 2.5rem;
+  cursor: pointer;
+  color: var(--white);
+  background-color: #8c1d19;
+  border: 1px solid #8c1d19;
   width: 30rem;
   height: 5rem;
   border-radius: 3rem;

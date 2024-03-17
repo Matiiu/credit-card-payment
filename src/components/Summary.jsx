@@ -7,7 +7,6 @@ export default function Summary() {
   const step = reduxProduct.step;
   const { creditCard, owner, address, installments, typeId, document } = reduxProduct.userInfo;
   const { title, price } = reduxProduct.product;
-  console.log({reduxProduct})
 
   const purchaseStatus = step === 2 ? 'Pending payment' : 'Approved Payment'
 
