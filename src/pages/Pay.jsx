@@ -59,6 +59,9 @@ export default function Pay() {
       // y el id de nuestros storages y devovlemos al cliente a la tienda
       localStorage.removeItem('productId');
       localStorage.removeItem('step');
+      if (completePurchase) {
+        localStorage.removeItem('cardInfo');
+      }
       dispatch(addProduct({ product: {} }));
       navigate('/')
     }

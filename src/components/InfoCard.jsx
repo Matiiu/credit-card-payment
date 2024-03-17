@@ -152,7 +152,14 @@ export default function InfoCard({ setError, error, onSaveFormData, activateErro
                 setFranchise(franchiseMap[firstLetter] || '');
 
                 // Validamos que el primer número pertenezca a una franquicia válida y que tenga 16 caracteres
-                if (creditCard.length < 16 || !(firstLetter in franchiseMap)) {
+                if (firstLetter == 3) {
+                    const validateAmex = firstLetter + creditCard[1];
+                    if (!['34', '37'].includes(validateAmex)) {
+                        newErrors.creditCard = '* Invalid card number';
+                    } else if (creditCard.length < 15 || creditCard.length > 15) {
+                        newErrors.creditCard = '* Invalid card number';
+                    }
+                } else if (firstLetter !== 3 && creditCard.length < 16 || !(firstLetter in franchiseMap)) {
                     newErrors.creditCard = '* Invalid card number';
                 }
             }
