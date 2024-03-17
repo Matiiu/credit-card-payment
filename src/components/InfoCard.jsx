@@ -17,6 +17,7 @@ export default function InfoCard({
     setTypeId,
     setDocument,
     setAddress,
+    setError,
     franchise,
     creditCard,
     securityId,
@@ -25,10 +26,10 @@ export default function InfoCard({
     expiryDate,
     typeId,
     document,
-    address
+    address,
+    error
 }) {
     const [tomorrow, setTomorrow] = useState('');
-    const [error, setError] = useState({});
 
     const cardImages = {
         visa: imgVisa,
@@ -74,47 +75,6 @@ export default function InfoCard({
         }
         return ''
     }
-
-    // const validateFieldsClick = () => {
-    //     // Validamos si alguno de los datos está vacío, si lo está los establecemos en vacío
-    //     // para que entre a la función validateFields y bloquee el botón de continuar
-    //     if (
-    //         !creditCard ||
-    //         !securityId ||
-    //         !installments ||
-    //         !owner ||
-    //         !expiryDate ||
-    //         !typeId ||
-    //         !document ||
-    //         !address
-    //     ) {
-    //         setCreditCard(creditCard || '');
-    //         setSecurityId(securityId || '');
-    //         setInstallments(installments || 1);
-    //         setOwner(owner || '');
-    //         setExpiryDate(expiryDate || '');
-    //         setTypeId(typeId || 1);
-    //         setDocument(document || '');
-    //         setAddress(address || '');
-
-    //         setAlertError('All fields are required');
-    //         return;
-    //     }
-    //     const firstLetter = creditCard[0];
-
-    //     if (creditCard.length < 16 || !(firstLetter in franchiseMap)) {
-    //         setAlertError('The credit card is not valid');
-    //         return;
-    //     }
-
-    //     const dueDate = validateDueDate();
-    //     if (dueDate) {
-    //         setAlertError(dueDate);
-    //         return;
-    //     }
-
-
-    // }
 
     useEffect(() => {
         const getCurrentDate = () => {
@@ -413,6 +373,7 @@ InfoCard.propTypes = {
     setTypeId: PropTypes.func.isRequired,
     setDocument: PropTypes.func.isRequired,
     setAddress: PropTypes.func.isRequired,
+    setError: PropTypes.func.isRequired,
     franchise: PropTypes.string.isRequired,
     creditCard: PropTypes.string.isRequired,
     securityId: PropTypes.string.isRequired,
@@ -421,5 +382,6 @@ InfoCard.propTypes = {
     expiryDate: PropTypes.string.isRequired,
     typeId: PropTypes.string.isRequired,
     document: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired
+    address: PropTypes.string.isRequired,
+    error: PropTypes.string.isRequired,
 };

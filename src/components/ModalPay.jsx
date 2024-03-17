@@ -7,9 +7,6 @@ import logo from '../assets/img/logo.png';
 import InfoCard from './InfoCard';
 import Summary from './Summary';
 
-
-
-
 export default function ModalPay({ setModalOpen, product }) {
     const [franchise, setFranchise] = useState('');
     const [creditCard, setCreditCard] = useState(undefined);
@@ -97,7 +94,7 @@ export default function ModalPay({ setModalOpen, product }) {
             setDocument(document || '');
             setAddress(address || '');
 
-            return'All fields are required';
+            return 'All fields are required';
         }
         const firstLetter = creditCard[0];
 
@@ -112,82 +109,6 @@ export default function ModalPay({ setModalOpen, product }) {
         return ''
     }
 
-    // useEffect(() => {
-    //     const getCurrentDate = () => {
-    //         const tomorrowDate = new Date();
-    //         tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-
-    //         const year = tomorrowDate.getFullYear();
-    //         let month = tomorrowDate.getMonth() + 1;
-    //         let day = tomorrowDate.getDate();
-
-    //         // Asegurarse de que el mes y el día tienen dos dígitos
-    //         month = month < 10 ? `0${month}` : month;
-    //         day = day < 10 ? `0${day}` : day;
-
-    //         setTomorrow(`${year}-${month}-${day}`);
-    //     }
-
-    //     getCurrentDate();
-    // });
-
-    const validateFields = () => {
-        const newErrors = {};
-
-        // Validar campo de número de tarjeta de crédito
-        if (creditCard !== undefined) {
-            if (!creditCard) {
-                newErrors.creditCard = '* The field is required';
-                setFranchise('')
-            } else {
-                const firstLetter = creditCard[0];
-                // Asignamos la franquicia o vacío si no corresponde a ninguno de los números del map
-                setFranchise(franchiseMap[firstLetter] || '');
-
-                // Validamos que el primer número pertenezca a una franquicia válida y que tenga 16 caracteres
-                if (creditCard.length < 16 || !(firstLetter in franchiseMap)) {
-                    newErrors.creditCard = '* Invalid card number';
-                }
-            }
-        }
-
-        // Validar código de seguridad
-        if (securityId !== undefined && !securityId) {
-            newErrors.securityId = '* The field is required'
-        }
-
-        // Validar campo de fecha de expiración
-        if (expiryDate !== undefined) {
-            const dueDate = validateDueDate();
-            if (dueDate) {
-                newErrors.dueDate = `* ${dueDate}`
-            }
-        }
-
-        // Validar campo Documento
-        if (document !== undefined && !document) {
-            newErrors.document = '* The field is required'
-        }
-
-        // Validar campo de nombre del propietario
-        if (owner !== undefined && !owner) {
-            newErrors.owner = '* The field is required';
-        }
-
-        // Validar la dirección
-        if (address !== undefined && !address) {
-            newErrors.address = '* The field is required';
-        }
-
-        // Actualizar el estado de los errores
-        setError(newErrors);
-    }
-
-    useEffect(() => {
-        // validar los campos
-        validateFields();
-
-    }, [creditCard, securityId, expiryDate, document, owner, address])
 
 
     useEffect(() => {
@@ -200,40 +121,6 @@ export default function ModalPay({ setModalOpen, product }) {
         // Limpia el temporizador cuando el componente se desmonta o la alerta se cierra manualmente
         return () => clearTimeout(timer);
     }, [alertError]);
-
-    const stepComponents = {
-        1: <InfoCard
-             setFranchise={setFranchise}
-             setCreditCard={setCreditCard}
-             setSecurityId={setSecurityId}
-             setInstallments={setInstallments}
-             setOwner={setOwner}
-             setExpiryDate={setExpiryDate}
-             setTypeId={setTypeId}
-             setDocument={setDocument}
-             setAddress={setAddress}
-             franchise={franchise}
-             creditCard={creditCard}
-             securityId={securityId}
-             installments={installments}
-             owner={owner}
-             expiryDate={expiryDate}
-             typeId={typeId}
-             document={document}
-             address={address}
-           />,
-        2: <Summary 
-                product={product}
-                creditCard={creditCard}
-                installments={installments}
-                typeId={typeId}
-                document={document}
-                owner={owner}
-                address={address}
-            />,
-        default: <p className=""></p>
-      };
-
 
     return (
         <div className="modal-container">
@@ -255,14 +142,50 @@ export default function ModalPay({ setModalOpen, product }) {
                     </header>
 
                     <div className='modal-content-layout container'>
-                        {stepComponents[step]}
+                        {step === 1
+                            ? (<InfoCard
+                                setFranchise={setFranchise}
+                                setCreditCard={setCreditCard}
+                                setSecurityId={setSecurityId}
+                                setInstallments={setInstallments}
+                                setOwner={setOwner}
+                                setExpiryDate={setExpiryDate}
+                                setTypeId={setTypeId}
+                                setDocument={setDocument}
+                                setAddress={setAddress}
+                                setError={setError}
+                                franchise={franchise}
+                                creditCard={creditCard}
+                                securityId={securityId}
+                                installments={installments}
+                                owner={owner}
+                                expiryDate={expiryDate}
+                                typeId={typeId}
+                                document={document}
+                                address={address}
+                                error={error}
+                            />)
+                            : (<Summary
+                                product={product}
+                                creditCard={creditCard}
+                                installments={installments}
+                                typeId={typeId}
+                                document={document}
+                                owner={owner}
+                                address={address}
+                                step={step}
+                            />)
+                        }
                     </div>
                     <footer className='buttons-form'>
-                        <button
-                            className={`button-next ${Object.keys(error).length > 0 ? 'is-error' : ''}`}
-                            onClick={handleClick}
-                            disabled={!!Object.keys(error).length}
-                        >{step === 1 ? 'Continue' : 'Confirm'}</button>
+                        {step < 2
+                            ? (<button
+                                className={`button-next ${Object.keys(error).length > 0 ? 'is-error' : ''}`}
+                                onClick={handleClick}
+                                disabled={!!Object.keys(error).length}
+                            >{step === 1 ? 'Continue' : 'Confirm'}</button>)
+                            : (<button className='button-next' onClick={() => setModalOpen(false)}>Close Modal</button>)
+                        }
                     </footer>
                     {alertError && <div className='alert-error' ref={errorRef}>{alertError}</div>}
                 </section>

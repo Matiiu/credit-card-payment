@@ -12,3 +12,18 @@
     gap: 0.5rem;
     align-items: flex-start;
 }
+
+/***** Purchase confirmation *****/
+.sumary .purchase-status {
+    display: flex;
+    justify-content: center;
+    color: var(--white);
+}
+
+.sumary .confirm {
+    background-color: #008000;
+}
+
+.sumary .pending {
+    background-color: #D4AF37;
+}
