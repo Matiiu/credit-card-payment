@@ -1,18 +1,15 @@
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+
 
 import '../assets/styles/Summary.css';
-export default function Summary({
-  product,
-  creditCard,
-  installments,
-  typeId,
-  document,
-  owner,
-  address,
-  step
-}) {
+export default function Summary() {
+  const reduxProduct = useSelector((sate) => sate.product);
+  const step = reduxProduct.step;
+  const { creditCard, owner, address, installments, typeId, document } = reduxProduct.userInfo;
+  const { title, price } = reduxProduct.product;
+  console.log({reduxProduct})
+
   const purchaseStatus = step === 2 ? 'Pending payment' : 'Approved Payment'
-  const { title, price } = product;
 
   const typeIdmap = {
     1: 'CC',
@@ -45,24 +42,6 @@ export default function Summary({
         </div>
 
       </section>
-
     </div>
   )
 }
-
-Summary.propTypes = {
-  product: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    price: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired
-  }).isRequired,
-  creditCard: PropTypes.string.isRequired,
-  installments: PropTypes.string.isRequired,
-  owner: PropTypes.string.isRequired,
-  typeId: PropTypes.string.isRequired,
-  document: PropTypes.string.isRequired,
-  address: PropTypes.string.isRequired,
-  step: PropTypes.string.isRequired,
-};

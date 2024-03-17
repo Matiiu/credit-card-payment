@@ -6,30 +6,72 @@ import imgMastercard from '../assets/img/mastercard.png';
 import imgAmex from '../assets/img/amex.png';
 import cardFront from '../assets/img/credit_card_front.png';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
-export default function InfoCard({
-    setFranchise,
-    setCreditCard,
-    setSecurityId,
-    setInstallments,
-    setOwner,
-    setExpiryDate,
-    setTypeId,
-    setDocument,
-    setAddress,
-    setError,
-    franchise,
-    creditCard,
-    securityId,
-    installments,
-    owner,
-    expiryDate,
-    typeId,
-    document,
-    address,
-    error
-}) {
+
+export default function InfoCard({ setError, error, onSaveFormData, activateErrors }) {
+    const reduxProduct = useSelector((sate) => sate.product);
+    const [franchise, setFranchise] = useState('');
+    const [creditCard, setCreditCard] = useState(undefined);
+    const [securityId, setSecurityId] = useState(undefined);
+    const [installments, setInstallments] = useState(1);
+    const [owner, setOwner] = useState(undefined);
+    const [expiryDate, setExpiryDate] = useState(undefined);
+    const [typeId, setTypeId] = useState(1);
+    const [document, setDocument] = useState(undefined);
+    const [address, setAddress] = useState(undefined);
+
     const [tomorrow, setTomorrow] = useState('');
+
+    useEffect(() => {
+        if (reduxProduct?.userInfo && Object.keys(reduxProduct.userInfo).length > 0) {
+            setFranchise(reduxProduct.userInfo.franchise);
+            setCreditCard(reduxProduct.userInfo.creditCard);
+            setInstallments(reduxProduct.userInfo?.installments);
+            setOwner(reduxProduct.userInfo?.owner);
+            setExpiryDate(reduxProduct.userInfo?.expiryDate);
+            setTypeId(reduxProduct.userInfo?.typeId);
+            setDocument(reduxProduct.userInfo?.document);
+            setAddress(reduxProduct.userInfo?.address);
+        }
+    }, [reduxProduct.userInfo])
+
+
+    useEffect(() => {
+        onSaveFormData({
+            franchise,
+            creditCard,
+            securityId,
+            installments,
+            owner,
+            expiryDate,
+            typeId,
+            document,
+            address,
+        })
+    }, [franchise,
+        creditCard,
+        securityId,
+        installments,
+        owner,
+        expiryDate,
+        typeId,
+        document,
+        address]);
+
+    useEffect(() => {
+        if (activateErrors) {
+            setFranchise(franchise || '');
+            setCreditCard(creditCard || '');
+            setSecurityId(securityId || '');
+            setOwner(owner || '');
+            setExpiryDate(expiryDate || '');
+            setDocument(document || '');
+            setAddress(address || '');
+        }
+    }, [activateErrors]);
+
+
 
     const cardImages = {
         visa: imgVisa,
@@ -234,6 +276,7 @@ export default function InfoCard({
                             minLength={16}
                             maxLength={16}
                             required
+                            value={creditCard}
                             onInput={(e) => setCreditCard(e.target.value)}
                             onKeyPress={handleWords}
                         />
@@ -291,6 +334,7 @@ export default function InfoCard({
                             maxLength={3}
                             required
                             onKeyPress={handleWords}
+                            value={securityId}
                             onInput={(e) => setSecurityId(e.target.value)}
                         />
                         <p className='msg-error'>{error?.securityId ?? ''}</p>
@@ -321,6 +365,7 @@ export default function InfoCard({
                             className="input"
                             placeholder='Your ID Number'
                             required
+                            value={document}
                             onInput={(e) => setDocument(e.target.value)}
                             onKeyPress={handleId}
                         />
@@ -338,6 +383,7 @@ export default function InfoCard({
                         className="input"
                         placeholder='Your Name'
                         required
+                        value={owner}
                         onInput={(e) => setOwner(e.target.value)}
                     />
                     <p className='msg-error'>{error?.owner ?? ''}</p>
@@ -353,6 +399,7 @@ export default function InfoCard({
                         className="input"
                         placeholder='Your Addres'
                         required
+                        value={address}
                         onInput={(e) => setAddress(e.target.value)}
                     />
                     <p className='msg-error'>{error?.address ?? ''}</p>
@@ -364,24 +411,8 @@ export default function InfoCard({
 
 
 InfoCard.propTypes = {
-    setFranchise: PropTypes.func.isRequired,
-    setCreditCard: PropTypes.func.isRequired,
-    setSecurityId: PropTypes.func.isRequired,
-    setInstallments: PropTypes.func.isRequired,
-    setOwner: PropTypes.func.isRequired,
-    setExpiryDate: PropTypes.func.isRequired,
-    setTypeId: PropTypes.func.isRequired,
-    setDocument: PropTypes.func.isRequired,
-    setAddress: PropTypes.func.isRequired,
-    setError: PropTypes.func.isRequired,
-    franchise: PropTypes.string.isRequired,
-    creditCard: PropTypes.string.isRequired,
-    securityId: PropTypes.string.isRequired,
-    installments: PropTypes.string.isRequired,
-    owner: PropTypes.string.isRequired,
-    expiryDate: PropTypes.string.isRequired,
-    typeId: PropTypes.string.isRequired,
-    document: PropTypes.string.isRequired,
-    address: PropTypes.string.isRequired,
+    setError: PropTypes.string.isRequired,
     error: PropTypes.string.isRequired,
+    onSaveFormData: PropTypes.func.isRequired,
+    activateErrors: PropTypes.bool.isRequired
 };

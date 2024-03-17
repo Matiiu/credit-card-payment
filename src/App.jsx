@@ -2,10 +2,11 @@ import { Outlet } from 'react-router-dom'
 import logo from './assets/img/logo.png'
 import { useEffect, useState } from 'react';
 import Navbar from './components/Navbar';
-
 export default function App() {
   const [scroll, setScroll] = useState('');
   const [menuVisible, setMenuVisible] = useState(false);
+
+
   // Manejar el evento de scroll
   useEffect(() => {
     const handleScroll = () => {

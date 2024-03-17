@@ -6,19 +6,22 @@ import '../assets/styles/ModalPay.css';
 import logo from '../assets/img/logo.png';
 import InfoCard from './InfoCard';
 import Summary from './Summary';
+import { useDispatch } from 'react-redux';
+import { addPayInfo, saveStep } from '../redux/productSlice';
 
-export default function ModalPay({ setModalOpen, product }) {
-    const [franchise, setFranchise] = useState('');
-    const [creditCard, setCreditCard] = useState(undefined);
-    const [securityId, setSecurityId] = useState(undefined);
-    const [installments, setInstallments] = useState(1);
-    const [owner, setOwner] = useState(undefined);
-    const [expiryDate, setExpiryDate] = useState(undefined);
-    const [typeId, setTypeId] = useState(1);
-    const [document, setDocument] = useState(undefined);
-    const [address, setAddress] = useState(undefined);
+import Loader from './Loader';
+
+
+
+export default function ModalPay({ setModalOpen }) {
+    const [formData, setFormData] = useState({});
     const errorRef = useRef(null);
     const [step, setStep] = useState(1);
+    const [activateErrors, setActivateErrors] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const dispatch = useDispatch();
+
+
 
     const [error, setError] = useState({});
     const [alertError, setAlertError] = useState('');
@@ -31,7 +34,7 @@ export default function ModalPay({ setModalOpen, product }) {
 
     // const imageSrc = cardImages[franchise] || cardFront;
 
-    const validateDueDate = () => {
+    const validateDueDate = (expiryDate) => {
         // Validar campo de fecha de expiración
         if (!expiryDate) {
             return 'The field is required'
@@ -61,18 +64,55 @@ export default function ModalPay({ setModalOpen, product }) {
         }
     }
 
-    const handleClick = () => {
+    const handleSaveFormData = (formData) => {
+        setFormData(formData);
+    }
+
+    const handleContinue = () => {
         if (step === 1) {
-            const response = validateFieldsClick();
+            const response = validateFieldsClick(formData);
             if (response) {
                 setAlertError(response);
                 return;
             }
+            formData.securityId = '';
+            // Guardamos la información del pago en nuestro storage global
+            dispatch(addPayInfo({ userInfo: formData }))
+            // Convertir la información de la tarjeta a cadena JSON
+            const cardInfoString = JSON.stringify(formData);
+            // Guardar en el storage
+            console.log(cardInfoString)
+            localStorage.setItem('cardInfo', cardInfoString);
         }
-        setStep(step + 1);
-    }
+        if (step < 3) {
+            // Simulamos un loader mientras se valida la tarjeta.
+            let nextStep = step + 1;
 
-    const validateFieldsClick = () => {
+            // Activar la carga
+            setLoading(true);
+
+            // Desactivar la carga después de 1.5 segundos
+            setTimeout(() => {
+                setLoading(false);
+                localStorage.setItem('step', (nextStep).toString());
+                dispatch(saveStep(nextStep))
+                setStep(nextStep);
+            }, 1500);
+        }
+
+    };
+
+    const validateFieldsClick = (data) => {
+        const {
+            creditCard,
+            securityId,
+            installments,
+            owner,
+            expiryDate,
+            typeId,
+            document,
+            address,
+        } = data
         // Validamos si alguno de los datos está vacío, si lo está los establecemos en vacío
         // para que entre a la función validateFields y bloquee el botón de continuar
         if (
@@ -85,31 +125,22 @@ export default function ModalPay({ setModalOpen, product }) {
             !document ||
             !address
         ) {
-            setCreditCard(creditCard || '');
-            setSecurityId(securityId || '');
-            setInstallments(installments || 1);
-            setOwner(owner || '');
-            setExpiryDate(expiryDate || '');
-            setTypeId(typeId || 1);
-            setDocument(document || '');
-            setAddress(address || '');
-
+            setActivateErrors(true);
             return 'All fields are required';
         }
+        setActivateErrors(false);
         const firstLetter = creditCard[0];
 
         if (creditCard.length < 16 || !(firstLetter in franchiseMap)) {
             return 'The credit card is not valid';
         }
 
-        const dueDate = validateDueDate();
+        const dueDate = validateDueDate(expiryDate);
         if (dueDate) {
             return dueDate;
         }
         return ''
     }
-
-
 
     useEffect(() => {
         if (alertError) {
@@ -121,6 +152,20 @@ export default function ModalPay({ setModalOpen, product }) {
         // Limpia el temporizador cuando el componente se desmonta o la alerta se cierra manualmente
         return () => clearTimeout(timer);
     }, [alertError]);
+
+    useEffect(() => {
+        const storageStep = Number(localStorage.getItem('step')) || 1;
+        console.log({ storageStep })
+        setStep(storageStep)
+        dispatch(saveStep(storageStep))
+
+        const cardInfoString = localStorage.getItem('cardInfo') || '';
+
+        if (cardInfoString) {
+            const cardInfoJson = JSON.parse(cardInfoString);
+            dispatch(addPayInfo({ userInfo: cardInfoJson }))
+        }
+    }, []);
 
     return (
         <div className="modal-container">
@@ -144,44 +189,19 @@ export default function ModalPay({ setModalOpen, product }) {
                     <div className='modal-content-layout container'>
                         {step === 1
                             ? (<InfoCard
-                                setFranchise={setFranchise}
-                                setCreditCard={setCreditCard}
-                                setSecurityId={setSecurityId}
-                                setInstallments={setInstallments}
-                                setOwner={setOwner}
-                                setExpiryDate={setExpiryDate}
-                                setTypeId={setTypeId}
-                                setDocument={setDocument}
-                                setAddress={setAddress}
                                 setError={setError}
-                                franchise={franchise}
-                                creditCard={creditCard}
-                                securityId={securityId}
-                                installments={installments}
-                                owner={owner}
-                                expiryDate={expiryDate}
-                                typeId={typeId}
-                                document={document}
-                                address={address}
                                 error={error}
+                                onSaveFormData={handleSaveFormData}
+                                activateErrors={activateErrors}
                             />)
-                            : (<Summary
-                                product={product}
-                                creditCard={creditCard}
-                                installments={installments}
-                                typeId={typeId}
-                                document={document}
-                                owner={owner}
-                                address={address}
-                                step={step}
-                            />)
+                            : (<Summary />)
                         }
                     </div>
                     <footer className='buttons-form'>
-                        {step < 2
+                        {step < 3
                             ? (<button
                                 className={`button-next ${Object.keys(error).length > 0 ? 'is-error' : ''}`}
-                                onClick={handleClick}
+                                onClick={handleContinue}
                                 disabled={!!Object.keys(error).length}
                             >{step === 1 ? 'Continue' : 'Confirm'}</button>)
                             : (<button className='button-next' onClick={() => setModalOpen(false)}>Close Modal</button>)
@@ -190,19 +210,13 @@ export default function ModalPay({ setModalOpen, product }) {
                     {alertError && <div className='alert-error' ref={errorRef}>{alertError}</div>}
                 </section>
             </div>
+            {loading && <Loader />}
         </div>
     );
 }
 
 ModalPay.propTypes = {
     setModalOpen: PropTypes.func.isRequired,
-    product: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-        price: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
-        category: PropTypes.string.isRequired,
-        image: PropTypes.string.isRequired
-    }).isRequired
 };
 
 
