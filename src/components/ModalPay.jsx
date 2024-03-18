@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import '../assets/styles/ModalPay.css';
@@ -8,6 +8,7 @@ import InfoCard from './InfoCard';
 import Summary from './Summary';
 import { useDispatch } from 'react-redux';
 import { addPayInfo, saveStep } from '../redux/productSlice';
+import { validateFields } from '../helpers/validateCardInfo';
 
 import Loader from './Loader';
 
@@ -15,7 +16,6 @@ import Loader from './Loader';
 
 export default function ModalPay({ setModalOpen }) {
     const [formData, setFormData] = useState({});
-    const errorRef = useRef(null);
     const [step, setStep] = useState(1);
     const [activateErrors, setActivateErrors] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -26,55 +26,18 @@ export default function ModalPay({ setModalOpen }) {
     const [error, setError] = useState({});
     const [alertError, setAlertError] = useState('');
 
-    const franchiseMap = {
-        3: 'amex',
-        4: 'visa',
-        5: 'mastercard',
-    };
-
-    // const imageSrc = cardImages[franchise] || cardFront;
-
-    const validateDueDate = (expiryDate) => {
-        // Validar campo de fecha de expiración
-        if (!expiryDate) {
-            return 'The field is required'
-        }
-
-        // Obtener la fecha actual
-        const currentDate = new Date();
-        // Obtener el año actual
-        const currentYear = currentDate.getFullYear();
-        // obtener los ultimos 2 digitos del año
-        const shortYear = currentYear % 100;
-        // Obtener el mes actual
-        const currentMonth = currentDate.getMonth() + 1;
-        const inputYear = Number(expiryDate.substring(0, 2));
-        const inputmonth = Number(expiryDate.substring(3, 5));
-
-        // Validar si la tarjeta esta expirada
-        if (
-            inputYear < shortYear ||
-            inputYear === shortYear && inputmonth <= currentMonth
-        ) {
-            return 'Expired card'
-        }
-        // Validmamos que el año no sea menor a 1 ni mayor a 12
-        if (inputmonth < 1 || inputmonth > 12) {
-            return '* Invalid month'
-        }
-    }
-
     const handleSaveFormData = (formData) => {
         setFormData(formData);
     }
-
     const handleContinue = () => {
         if (step === 1) {
-            const response = validateFieldsClick(formData);
+            const response = validateFields(formData);
             if (response) {
+                setActivateErrors(true);
                 setAlertError(response);
                 return;
             }
+            setActivateErrors(false);
             formData.securityId = '';
             // Guardamos la información del pago en nuestro storage global
             dispatch(addPayInfo({ userInfo: formData }))
@@ -109,52 +72,9 @@ export default function ModalPay({ setModalOpen }) {
             setStep(backStep);
         }
     }
-
-    const validateFieldsClick = (data) => {
-        const {
-            creditCard,
-            securityId,
-            installments,
-            owner,
-            expiryDate,
-            typeId,
-            document,
-            address,
-        } = data
-        // Validamos si alguno de los datos está vacío, si lo está los establecemos en vacío
-        // para que entre a la función validateFields y bloquee el botón de continuar
-        if (
-            !creditCard ||
-            !securityId ||
-            !installments ||
-            !owner ||
-            !expiryDate ||
-            !typeId ||
-            !document ||
-            !address
-        ) {
-            setActivateErrors(true);
-            return 'All fields are required';
-        }
-        setActivateErrors(false);
-        const firstLetter = creditCard[0];
-
-        if (creditCard.length < 16 || !(firstLetter in franchiseMap)) {
-            return 'The credit card is not valid';
-        }
-
-        const dueDate = validateDueDate(expiryDate);
-        if (dueDate) {
-            return dueDate;
-        }
-        return ''
-    }
+    
 
     useEffect(() => {
-        if (alertError) {
-            // Enfocar el error
-            errorRef.current.scrollIntoView({ behavior: 'smooth' });
-        }
         // Configura un temporizador para ocultar la alerta después de 3 minutos
         const timer = setTimeout(() => setAlertError(''), 4000);
         // Limpia el temporizador cuando el componente se desmonta o la alerta se cierra manualmente
@@ -215,7 +135,7 @@ export default function ModalPay({ setModalOpen }) {
                         }
                         {step === 2 && <button className='button-back' onClick={handleBack}>Back</button>}
                     </footer>
-                    {alertError && <div className='alert-error' ref={errorRef}>{alertError}</div>}
+                    {alertError && <div className='alert-error'>{alertError}</div>}
                 </section>
             </div>
             {loading && <Loader />}

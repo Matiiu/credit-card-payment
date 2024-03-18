@@ -8,6 +8,8 @@ import cardFront from '../assets/img/credit_card_front.png';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+import { validateDueDate } from '../helpers/validateCardInfo';
+
 
 export default function InfoCard({ setError, error, onSaveFormData, activateErrors }) {
     const reduxProduct = useSelector((sate) => sate.product);
@@ -20,7 +22,6 @@ export default function InfoCard({ setError, error, onSaveFormData, activateErro
     const [typeId, setTypeId] = useState(1);
     const [document, setDocument] = useState(undefined);
     const [address, setAddress] = useState(undefined);
-
     const [tomorrow, setTomorrow] = useState('');
 
     useEffect(() => {
@@ -88,36 +89,7 @@ export default function InfoCard({ setError, error, onSaveFormData, activateErro
 
     const imageSrc = cardImages[franchise] || cardFront;
 
-    const validateDueDate = () => {
-        // Validar campo de fecha de expiración
-        if (!expiryDate) {
-            return 'The field is required'
-        }
-
-        // Obtener la fecha actual
-        const currentDate = new Date();
-        // Obtener el año actual
-        const currentYear = currentDate.getFullYear();
-        // obtener los ultimos 2 digitos del año
-        const shortYear = currentYear % 100;
-        // Obtener el mes actual
-        const currentMonth = currentDate.getMonth() + 1;
-        const inputYear = Number(expiryDate.substring(0, 2));
-        const inputmonth = Number(expiryDate.substring(3, 5));
-
-        // Validar si la tarjeta esta expirada
-        if (
-            inputYear < shortYear ||
-            inputYear === shortYear && inputmonth <= currentMonth
-        ) {
-            return 'Expired card'
-        }
-        // Validmamos que el año no sea menor a 1 ni mayor a 12
-        if (inputmonth < 1 || inputmonth > 12) {
-            return '* Invalid month'
-        }
-        return ''
-    }
+    
 
     useEffect(() => {
         const getCurrentDate = () => {
@@ -159,7 +131,7 @@ export default function InfoCard({ setError, error, onSaveFormData, activateErro
                     } else if (creditCard.length < 15 || creditCard.length > 15) {
                         newErrors.creditCard = '* Invalid card number';
                     }
-                } else if (firstLetter !== 3 && creditCard.length < 16 || !(firstLetter in franchiseMap)) {
+                } else if (firstLetter != 3 && creditCard.length < 16 || !(firstLetter in franchiseMap)) {
                     newErrors.creditCard = '* Invalid card number';
                 }
             }
@@ -172,7 +144,7 @@ export default function InfoCard({ setError, error, onSaveFormData, activateErro
 
         // Validar campo de fecha de expiración
         if (expiryDate !== undefined) {
-            const dueDate = validateDueDate();
+            const dueDate = validateDueDate(expiryDate);
             if (dueDate) {
                 newErrors.dueDate = `* ${dueDate}`
             }
@@ -281,8 +253,8 @@ export default function InfoCard({ setError, error, onSaveFormData, activateErro
                             name="credit-number"
                             className='input'
                             placeholder='xxxx xxxx xxx xxxx'
-                            minLength={16}
-                            maxLength={16}
+                            minLength={franchise && franchise === 'amex' ? 15 : 16}
+                            maxLength={franchise && franchise === 'amex' ? 15 : 16}
                             required
                             value={creditCard}
                             onInput={(e) => setCreditCard(e.target.value)}
