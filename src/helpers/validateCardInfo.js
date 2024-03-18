@@ -62,21 +62,26 @@ export const validateFields = (data) => {
         5: 'mastercard',
     };
 
+    // Validación para las amex
     if (firstLetter == 3) {
         const validateAmex = firstLetter + creditCard[1];
-
+        // Debe iniciar en 37 0 34
         if (!['34', '37'].includes(validateAmex)) {
-            return 'Invalid card number';
+            return 'Invalid American Express card number';
+        }
+        // Debe tener 15 digitos
+        if (creditCard.length < 15 || creditCard.length > 15) {
+            return 'Invalid American Express card number';
         }
     }
 
-    if (firstLetter != 3 && creditCard.length < 16 || !(firstLetter in franchiseMap)) {
-        return 'The credit card is not valid';
-    }
+        if (firstLetter != 3 && creditCard.length < 16 || !(firstLetter in franchiseMap)) {
+            return 'The credit card is not valid';
+        }
 
-    const dueDate = validateDueDate(expiryDate);
-    if (dueDate) {
-        return dueDate;
+        const dueDate = validateDueDate(expiryDate);
+        if (dueDate) {
+            return dueDate;
+        }
+        return ''
     }
-    return ''
-}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLoaderData } from 'react-router-dom';
 
-import { getProdruct } from "../api/productos";
+import { getProduct } from "../api/productos";
 import ModalPay from "../components/ModalPay";
 import { useDispatch } from 'react-redux';
 import { addProduct } from '../redux/productSlice';
@@ -12,7 +12,7 @@ import '../assets/styles/Pay.css';
 
 export async function loader({ params }) {
   // Obtenemos el id de la variable dinamica que se declaro en las rutas
-  const response = await getProdruct(params?.productId ?? '');
+  const response = await getProduct(params?.productId ?? '');
   if (!Object.values(response).length) {
     throw new Response('', {
         status: 404,

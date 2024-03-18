@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useLoaderData } from 'react-router-dom';
-import { getProdructs } from '../api/productos';
+import { getProducts } from '../api/productos';
 import Product from '../components/Product';
 import { useNavigate } from 'react-router-dom';
 import Loader from '../components/Loader';
 
 export async function loader() {
-    const response = await getProdructs();
+    const response = await getProducts();
     return response;
   }
 

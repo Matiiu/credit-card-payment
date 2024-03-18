@@ -1,6 +1,6 @@
-const url = import.meta.env.VITE_URL_API;
+const url = 'https://fakestoreapi.com/products';
 
-export async function getProdructs() {
+export async function getProducts() {
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -13,7 +13,7 @@ export async function getProdructs() {
     }
 }
 
-export async function getProdruct(productId) {
+export async function getProduct(productId) {
     try {
         const response = await fetch(`${url}/${productId}`);
         if (!response.ok) {
