@@ -10,9 +10,10 @@
 
 
 ## Si desea correr las pruebas
-. Eliminar del package.json la linea 5: "type": "module",
-
-#### Correr las pruebas
+1. Eliminar del package.json la linea 5: "type": "module",
+2. Correr las pruebas
+   
+#### 
 	npm test
 
 
